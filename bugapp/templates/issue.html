@@ -5,7 +5,7 @@
     {% csrf_token %}
     <div class="form-group">
         <label >Project name</label>
-        <div name="project" style="background-color: burlywood;" class="form-control-static">
+        <div name="project" style="background-color:#DCDCDC;" value="{{issue.project.project_name}}" class="form-control-static">
             {{issue.project.project_name}}
         </div>
     </div>
@@ -15,20 +15,20 @@
     </div>
     <div class="form-group">
         <label>Description:</label>
-        <textarea name="description" value="" class="form-control" readonly required>{{issue.issue_descr}}</textarea>
+        <textarea name="description" value="{{issue.issue_descr}}" class="form-control" readonly required>{{issue.issue_descr}}</textarea>
     </div>
     <div class="form-group">
         <label>Issue type:</label>
         <select name="type" class="form-control" readonly>
-            <option selected value="{{issue.project.project_type}}" style="background-color: burlywood;" disabled>{{issue.project.project_type}}</option>
+            <option selected value="{{issue.project.project_type}}" style="background-color: #DCDCDC;">{{issue.project.project_type}}</option>
             <option value="Feature">Feature</option>
             <option value="bug">Bug</option>
         </select>
     </div>
     <div class="form-group">
         <label>Assignee:</label>
-        <select name="assignee" class="form-control" readonly>
-            <option style="background-color: burlywood;" selected disabled selected value="{{issue.assignee.id}}">{{issue.assignee.user_name}}</option>
+        <select name="assignee" class="form-control">
+            <option style="background-color: burlywood;" selected readonly value="{{issue.assignee.id}}">{{issue.assignee.user_name}}</option>
             {% for user in users %}
             {% if user.user_name != issue.assignee.user_name %}
             <option value="{{user.id}}">{{user.user_name}}</option>
@@ -39,7 +39,7 @@
     <div class="form-group">
         <label>Status:</label>
         <select name="status" class="form-control" readonly>
-            <option style="background-color: burlywood;" selected disabled>{{issue.status}}</option>
+            <option style="background-color: #DCDCDC;" selected>{{issue.status}}</option>
             <option >New</option>
             <option >In progress</option>
             <option >On hold</option>

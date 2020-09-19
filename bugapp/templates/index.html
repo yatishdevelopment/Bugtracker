@@ -21,7 +21,7 @@
     <ul class="nav navbar-nav">
       <div class="nav navbar-nav" style="margin-left: 1100px;color:aliceblue">
         {% if request.session.username %}
-        <div>Logged in as <a href="{% url 'issue_by_user' user.id %}"> {{user.user_name}}</a></div>
+        <div>Logged in as <a href="{% url 'issue_by_user' user.id %}"> {{request.session.username}}</a></div>
         <a href="{% url 'logout' %}"  class="btn btn-primary">Logout</a>
         <a href="{% url 'add_project' %}"  class="btn btn-primary">Add a project</a>
         <a href="{% url 'add_bug' %}"  class="btn btn-primary">Reeport a bug</a>

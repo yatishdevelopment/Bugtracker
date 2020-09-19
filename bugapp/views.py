@@ -3,6 +3,7 @@ from django.http import HttpResponse,JsonResponse
 from bugapp.forms import *
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -22,7 +23,6 @@ def employee(request):
             data['code']=1
             data['msg']='Registered'
             return JsonResponse(data)
-        print('coming her')
         data['code']=0
         data['msg']='User Already Exists'
         return JsonResponse(data)
@@ -55,15 +55,15 @@ def logout(request):
     return redirect(index)
 
 def add_project(request):
+    user = User.objects.get(user_name=request.session['username'])
     if request.method=="POST":
-        user = User.objects.get(user_name=request.session['username'])
         project = Project.objects.create(
             project_name = request.POST.get('projectname'),
             project_type = request.POST.get('type'),
             created_by = user
         )
         return redirect(index)
-    return render(request,"add_project.html")
+    return render(request,"add_project.html",{"user":user})
 
 def add_bug(request):
     if request.method == "POST":
@@ -89,33 +89,19 @@ def all_projects(request):
 
 def issue_by_user(request,pk=None):
     issues = Issue.objects.filter(assignee=pk)
-    print(issues)
     return render(request,'issue_by_user.html',{"issues":issues})
 
 
 def issue_edit(request,pk=None):
+    query=Q()
     issue = Issue.objects.filter(id=pk).first()
-    user = User.objects.get(user_name=request.session['username'])
-
     if request.method == "POST":
-        print(request.POST)
+        user = User.objects.get(user_name=request.session['username'])
         issue.issue_name = request.POST.get('issue')
         issue.issue_descr = request.POST.get('description')
         issue.status = request.POST.get('status')
-        issue.updated_by = user
-        # issue.save()
-
-        print(request)
-        # user = User.objects.get(user_name=request.session['username'])
-        # Issue.objects.create(
-        #     project = Project.objects.get(id=request.POST.get('project')),
-        #     issue_name = request.POST.get('issue'),
-        #     issue_descr = request.POST.get('description'),
-        #     assignee = User.objects.get(id=request.POST.get('assignee')),
-        #     status = request.POST.get('status'),
-        #     created_by = user
-        #     )
-        return redirect(index)
-    
-    print(issue.assignee.user_name)
-    return render(request,'issue.html',{'issue':issue,'users':User.objects.all()})
+        issue.assignee_id = request.POST.get('assignee')
+        issue.updated_by_id = user.id
+        issue.save()
+        return redirect(issue_edit,issue.id)
+    return render(request,'issue.html',{'issue':issue,'users':User.objects.filter(query)})
