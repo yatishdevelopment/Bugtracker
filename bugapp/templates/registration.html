@@ -1,0 +1,42 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Register</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script href='https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js'></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/registration.js' %}"></script>
+
+</head>
+<body ng-app="registrationApp" ng-controller="registrationCtrl">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a>pae1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+  </div>
+</nav>
+<nav aria-label="breadcrumb" >
+    <ol class="breadcrumb" style="background-color: black;">
+    <h5 style="color:blanchedalmond;font-family:georgia,garamond,serif;font-size:16px;font-style:italic;" class="text-center">Bug tracker</h5>
+    </ol>
+</nav>
+
+<div class="container">
+    <form action="{% url 'employee' %}">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary" id="btn_signup">Register</button>
+    </form>
+</div>
+
+</body>
+</html>
+

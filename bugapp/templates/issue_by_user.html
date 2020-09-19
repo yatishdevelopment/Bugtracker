@@ -1,0 +1,27 @@
+{% extends "all_projects.html" %}
+{% load static %}
+
+{% block content %}
+<table style="width:100%" id="mytable">
+    <thead>
+      <tr>
+        <th>Issue name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Project name</th>
+        <th>Created by</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for issue in issues %}
+        <tr>
+          <td><a href="{% url 'issue_edit' issue.pk %}">{{issue.issue_name}}</a></td>
+          <td>{{issue.issue_descr}}</td>
+          <td>{{issue.status}}</td>
+          <td>{{issue.project.project_name}}</td>
+          <td>{{issue.created_by.user_name}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>    
+{% endblock %}

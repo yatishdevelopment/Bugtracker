@@ -1,0 +1,61 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bug Tracker</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script href='https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js'></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/index.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <a href="{% url 'index' %}"  class="btn btn-primary">Home</a>
+
+    <nav aria-label="breadcrumb" >
+        <ol class="breadcrumb" style="background-color: black;">
+        <h4 style="color:blanchedalmond;font-family:georgia,garamond,serif;font-size:16px;font-style:italic;" class="text-center">Bug tracker</h4>
+        </ol>
+    </nav>
+    <script>
+        $(document).ready(function() {
+        $('#mytable').DataTable();
+        })
+        
+    </script>
+    {% block content %}
+
+    
+
+{% if projects %}
+<table style="width:100%" id="mytable">
+<thead>
+  <tr>
+    <th>Project name</th>
+    <th>Created by</th>
+  </tr>
+</thead>
+<tbody>
+  {% for project in projects %}
+    <tr>
+      <td>{{project.project_name}}</td>
+      <td>{{project.created_by.user_name}}</td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% endif %}
+
+{% endblock %}
+   
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% extends "all_projects.html" %}
+{% load static %}
+{% block content %}
+<form action="{% url 'issue_edit' issue.id %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label >Project name</label>
+        <div name="project" style="background-color: burlywood;" class="form-control-static">
+            {{issue.project.project_name}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Issue title</label>
+        <input name="issue"  value="{{issue.issue_name}}" class="form-control" readonly required>
+    </div>
+    <div class="form-group">
+        <label>Description:</label>
+        <textarea name="description" value="" class="form-control" readonly required>{{issue.issue_descr}}</textarea>
+    </div>
+    <div class="form-group">
+        <label>Issue type:</label>
+        <select name="type" class="form-control" readonly>
+            <option selected value="{{issue.project.project_type}}" style="background-color: burlywood;" disabled>{{issue.project.project_type}}</option>
+            <option value="Feature">Feature</option>
+            <option value="bug">Bug</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Assignee:</label>
+        <select name="assignee" class="form-control" readonly>
+            <option style="background-color: burlywood;" selected disabled selected value="{{issue.assignee.id}}">{{issue.assignee.user_name}}</option>
+            {% for user in users %}
+            {% if user.user_name != issue.assignee.user_name %}
+            <option value="{{user.id}}">{{user.user_name}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Status:</label>
+        <select name="status" class="form-control" readonly>
+            <option style="background-color: burlywood;" selected disabled>{{issue.status}}</option>
+            <option >New</option>
+            <option >In progress</option>
+            <option >On hold</option>
+            <option >Closed</option>
+        </select>
+    </div>
+<button type="submit" class="form-check-input" id="btn_save" style="background-color:	#32CD32" >Save</button>
+
+
+</form>
+<button onClick="switchEditMode()" id="btn_close" style="background-color:	#32CD32" >Cancel</button>
+
+<button onClick="applyEditMode()" id="edit_btn" style="background-color:	#32CD32" >Edit</button>
+
+
+<script>
+    $("#btn_close").hide()
+    $("#btn_save").hide()
+
+
+    function applyEditMode(){
+        $(':input').removeAttr('readonly')
+        $("#edit_btn").hide()
+        $("#btn_close").show()
+        $("#btn_save").show()
+
+
+    }
+
+    function switchEditMode(){
+        $(':input').attr('readonly',true)
+        $("#edit_btn").show()
+        $("#btn_close").hide()
+        $("#btn_save").hide()
+    }
+    
+</script>
+
+
+{% endblock %}
