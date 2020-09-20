@@ -17,11 +17,6 @@
 <body>
     <a href="{% url 'index' %}"  class="btn btn-primary">Home</a>
 
-    <nav aria-label="breadcrumb" >
-        <ol class="breadcrumb" style="background-color: black;">
-        <h4 style="color:blanchedalmond;font-family:georgia,garamond,serif;font-size:16px;font-style:italic;" class="text-center">Bug tracker</h4>
-        </ol>
-    </nav>
     <script>
         $(document).ready(function() {
         $('#mytable').DataTable();
@@ -33,6 +28,8 @@
     
 
 {% if projects %}
+<br>
+<br>
 <table style="width:100%" id="mytable">
 <thead>
   <tr>

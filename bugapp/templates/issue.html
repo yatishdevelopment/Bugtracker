@@ -28,7 +28,7 @@
     <div class="form-group">
         <label>Assignee:</label>
         <select name="assignee" class="form-control">
-            <option style="background-color: burlywood;" selected readonly value="{{issue.assignee.id}}">{{issue.assignee.user_name}}</option>
+            <option style="background-color: #DCDCDC;" selected readonly value="{{issue.assignee.id}}">{{issue.assignee.user_name}}</option>
             {% for user in users %}
             {% if user.user_name != issue.assignee.user_name %}
             <option value="{{user.id}}">{{user.user_name}}</option>
@@ -46,13 +46,13 @@
             <option >Closed</option>
         </select>
     </div>
-<button type="submit" class="form-check-input" id="btn_save" style="background-color:	#32CD32" >Save</button>
+<button type="submit" class="btn btn-primary" id="btn_save">Save</button>
 
 
 </form>
-<button onClick="switchEditMode()" id="btn_close" style="background-color:	#32CD32" >Cancel</button>
+<button class="btn btn-primary" onClick="switchEditMode()" id="btn_close" >Cancel</button>
 
-<button onClick="applyEditMode()" id="edit_btn" style="background-color:	#32CD32" >Edit</button>
+<button class="btn btn-primary" onClick="applyEditMode()" id="edit_btn" >Edit</button>
 
 
 <script>

@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% load static  %}
+
+
+{% block content %}
+<table class="table table-striped b" style=" border-style: solid;background-color:#DCDCDC">
+  <thead >
+    <tr>
+      <th>Issues</th>
+      <th>Open</th>
+      <th>Closed</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="{% url 'issue_stats' 'All' %}">Assigned issues</a></td>
+      <td><a href="{% url 'issue_stats' 'Open' %}">{{open_issues}}</a></td>
+      <td><a href="{% url 'issue_stats' 'Closed' %}">{{closed_issues}}</a></td>
+      <td><a href="{% url 'issue_stats' 'All' %}">{{all_issues}}</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table table-striped b" style=" border-style: solid;background-color:#DCDCDC">
+  <thead >
+    <tr>
+      <th>Issues</th>
+      <th>Open</th>
+      <th>Closed</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="{% url 'issue_stats' 'All_reported' %}">Reported issues</a></td>
+      <td><a href="{% url 'issue_stats' 'Open_reported' %}">{{open_issues_reported}}</a></td>
+      <td><a href="{% url 'issue_stats' 'Closed_reported' %}">{{closed_issues_reported}}</a></td>
+      <td><a href="{% url 'issue_stats' 'All_reported' %}">{{all_reported}}</a></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

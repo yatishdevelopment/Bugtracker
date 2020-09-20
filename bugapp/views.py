@@ -9,10 +9,38 @@ from django.db.models import Q
 def index(request):
     form=User_form()
     if "username" in request.session:
-
         user = User.objects.get(user_name=request.session['username'])
-        return render(request,'index.html',{'form':form,'user':user})
+        closed_issues = Issue.objects.filter(assignee_id = user.id,status="Closed").count()
+        all_issues = Issue.objects.filter(assignee_id = user.id).count()
+        open_issues = all_issues - closed_issues
+        all_reported = Issue.objects.filter(created_by_id = user.id).count()
+        closed_issues_reported = Issue.objects.filter(created_by_id = user.id,status="Closed").count()
+        open_issues_reported = all_reported - closed_issues_reported
+        return render(request,'issues_count_list.html',{'form':form,'user':user,'closed_issues':closed_issues,
+            'open_issues':open_issues,'all_issues':all_issues,
+            'all_reported':all_reported,'closed_issues_reported':closed_issues_reported,'open_issues_reported':open_issues_reported})
     return render(request,'index.html',{'form':form})
+
+def issue_stats(request,status):
+    user = User.objects.get(user_name=request.session['username'])
+
+    if status == "Closed":
+        issues = Issue.objects.filter(assignee_id = user.id,status="Closed")
+    elif status == "Open":
+        issues = Issue.objects.filter(assignee_id = user.id).exclude(status="Closed")
+    elif status == 'All':
+        issues = Issue.objects.filter(assignee_id = user.id)
+
+    elif status == "Closed_reported":
+        issues = Issue.objects.filter(created_by_id = user.id,status="Closed")
+    elif status == "Open_reported":
+        issues = Issue.objects.filter(created_by_id = user.id).exclude(status="Closed")
+    elif status == "All_reported":
+        issues = Issue.objects.filter(created_by_id = user.id)
+
+    return render(request,'issue_by_user.html',{"issues":issues})
+
+
 
 @csrf_exempt
 def employee(request):
@@ -31,26 +59,23 @@ def employee(request):
 
 def login(request):
     form=User_form()
-    # del request.session['username']
-    if not "username" in request.session:
-        if request.method=="POST":
-            user = User.objects.filter(user_name=request.POST.get('username')).first()
-            if user:
-                if user.password == request.POST.get('password'):
-                    request.session['username'] = user.user_name
-                    return redirect(index)
-                msg='Invalid password'
-                return render(request,'login.html',{'msg':msg,'form':form})
-            msg='User does not exists'
+    if request.session._session:
+        del request.session
+    if request.method == "POST":
+        user = User.objects.filter(user_name=request.POST.get('username')).first()
+        if user:
+            if user.password == request.POST.get('password'):
+                request.session['username'] = user.user_name
+                return redirect(index)
+            msg='Invalid password'
             return render(request,'login.html',{'msg':msg,'form':form})
-        return render(request,'login.html')
-    msg="user logged in already"
-    return redirect(index,{'msg':msg,'form':form})
+        msg='User does not exists'
+        return render(request,'login.html',{'msg':msg,'form':form})
+    return render(request,'login.html')
 
 def logout(request):
-    form=User_form()
     if "username" in request.session:
-        del request.session['username']
+        del request.session["username"]
         return redirect(index)
     return redirect(index)
 
@@ -69,16 +94,16 @@ def add_bug(request):
     if request.method == "POST":
         user = User.objects.get(user_name=request.session['username'])
         Issue.objects.create(
-            project = Project.objects.get(id=request.POST.get('project')),
+            project_id = request.POST.get('project'),
             issue_name = request.POST.get('issue'),
             issue_descr = request.POST.get('description'),
-            assignee = User.objects.get(id=request.POST.get('assignee')),
+            assignee_id = request.POST.get('assignee'),
             status = request.POST.get('status'),
-            created_by = user
+            created_by_id = user.id
             )
         return redirect(index)
-    projects = Project.objects.all()
-    users = User.objects.all()
+    projects = Project.objects.filter(Q())
+    users = User.objects.filter(Q())
     return render(request,'add_bug.html',{'projects':projects,'users':users})
 
 

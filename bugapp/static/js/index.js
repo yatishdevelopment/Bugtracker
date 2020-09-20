@@ -4,6 +4,18 @@ app.controller('myCtrl',function($scope){
     $scope.signUp = function(){
         $("#msg").hide()
         $("#signUpModal").modal('show')
+        $("input#id_name").on({
+        keydown: function(e) {
+                if (e.which === 32)
+                  return false;
+                },
+            });
+        $("input#id_password").on({
+        keydown: function(e) {
+                if (e.which === 32)
+                  return false;
+                },
+            });
     },
     $scope.signIn = function(){
         $("#msg_login").hide()

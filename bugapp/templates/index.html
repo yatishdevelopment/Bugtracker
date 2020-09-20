@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <title>Bug Tracker</title>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -11,37 +12,50 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   <script src="{% static 'js/index.js' %}"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+
 
 </head>
 <body ng-app="myApp" ng-controller="myCtrl">
-  <a href="{% url 'index' %}"  class="btn btn-primary">Home</a>
-
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-      <div class="nav navbar-nav" style="margin-left: 1100px;color:aliceblue">
+<nav class="navbar navbar">
         {% if request.session.username %}
-        <div>Logged in as <a href="{% url 'issue_by_user' user.id %}"> {{request.session.username}}</a></div>
+        <a href="{% url 'index' %}"  class="btn btn-primary">Home</a>
         <a href="{% url 'logout' %}"  class="btn btn-primary">Logout</a>
         <a href="{% url 'add_project' %}"  class="btn btn-primary">Add a project</a>
         <a href="{% url 'add_bug' %}"  class="btn btn-primary">Reeport a bug</a>
         <a href="{% url 'all_projects' %}"  class="btn btn-primary">All projrcts</a>
+        <h4>Logged in as <a href="{% url 'issue_by_user' user.id %}">{{request.session.username}}</a></h4> 
+
         {% endif %}
         {% if not request.session.username %}
         <a href="{% url 'login' %}" style="margin-left: 10px;" class="btn btn-primary ml-2">Login</a>
         <a ng-click="signUp()" style="margin-left: 20px;" class="btn btn-primary ml-2">Sign up</a>
         {% endif %}
+</nav>
 
-      </div>
-      
-    </ul>
+{% if not request.session.username %}
+<style>
+     body {
+      background-size: 100%;
+      background-image: url("{% static 'images/bg.png/' %}");
+     }
+  </style>
+<div style="margin-left: 20px">
+  <h2>Bug tracker</h2>
+  <div class="card">
+    <div class="card-body" style="max-width: 200px">A bug tracking system is usually a necessary
+     component of a professional software or web development infrastructure, and consistent use of a bug or issue tracking system is considered one of the "hallmarks of a good software team</div>
+     <h5>Developed by yatish prajapati</h5>
+     <div style="position: fixed;margin-left: 110px">
+     <a href="https://www.facebook.com/yatish.prajapati"><i class="fa fa-facebook-f" style="font-size:24px;"></i></a>
+     <a href="https://www.instagram.com/fitnessfreak_yatishp"><i class="fa fa-instagram float-right"  style="font-size:24px;margin-left: 4px"></i></a>
+     <a href="https://in.linkedin.com/in/yatish-prajapati-4a2684142?trk=people-guest_people_search-card"><i class="fa fa-linkedin"  style="font-size:24px;margin-left: 5px"></i></a>
+     </div>
   </div>
-</nav>
-<nav aria-label="breadcrumb" >
-    <ol class="breadcrumb" style="background-color: black;">
-    <h4 style="color:blanchedalmond;font-family:georgia,garamond,serif;font-size:16px;font-style:italic;" class="text-center">Bug tracker</h4>
-    </ol>
-</nav>
+</div>
+{% endif %}
 
 {% if e_msg %}
     <div class="alert alert-danger text-center">{{e_msg}}</div>
@@ -72,7 +86,6 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>
 
